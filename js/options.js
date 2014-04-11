@@ -91,6 +91,7 @@ function saveOptions() {
     options.showCaptions = $('#chkShowCaptions')[0].checked;
     options.showHighRes = $('#chkShowHighRes')[0].checked;
     options.addToHistory = $('#chkAddToHistory')[0].checked;
+    options.addToRedditGoldHistory = $('#chkAddToRedditGoldHistory')[0].checked;
     options.alwaysPreload = $('#chkAlwaysPreload')[0].checked;
     options.displayDelay = getMilliseconds($('#txtDisplayDelay'));
     options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
@@ -129,6 +130,7 @@ function restoreOptions() {
     $('#chkShowCaptions')[0].checked = options.showCaptions;
     $('#chkShowHighRes')[0].checked = options.showHighRes;
     $('#chkAddToHistory')[0].checked = options.addToHistory;
+    $('#chkAddToRedditGoldHistory')[0].checked = options.addToRedditGoldHistory;
     $('#chkAlwaysPreload')[0].checked = options.alwaysPreload;
     $('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
     $('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);

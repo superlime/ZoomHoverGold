@@ -121,6 +121,11 @@ var hoverZoom = {
             'www.redditmedia.com'
         ];
 
+        // Quick check to see if the current site is reddit (for visited link tracking)
+        function isThisReddit() {
+            return /reddit\.com/gi.test(window.location.host);
+        }
+
         // Calculate optimal image position and size
         function posImg(position) {
             if (!imgFullSize) {
@@ -156,7 +161,7 @@ var hoverZoom = {
                     }
                 }
             }
-
+            
             if (displayOnRight) {
                 position.left += offset;
             } else {
@@ -484,6 +489,32 @@ var hoverZoom = {
             if (options.addToHistory && !chrome.extension.inIncognitoContext) {
                 var url = hz.currentLink.context.href || imgDetails.url;
                 chrome.extension.sendRequest({action:'addUrlToHistory', url:url});
+            }
+            
+            // Skip reddit link logging if not on reddit, or if user didn't enable "add to gold history", or if in
+            // chrome incognito mode.
+            if (options.addToRedditGoldHistory && !chrome.extension.inIncognitoContext && isThisReddit())
+            {
+                // Also skip if the user doesn't actually *have* gold.
+                if ($('body').hasClass('gold'))
+                {
+                    var thing = hz.currentLink.closest('.thing');
+                    var fullname = thing.data().fullname;
+                    
+                    // form search selector so that the injected script can find the right node
+                    var selector = '.id-' + fullname + ' a.title';
+                    
+                    // inject simple script to trigger a 'visit' event on the right node. Figuring this part out took
+                    // waaaaaaaaaay longer than it should have.  :P  turns out chrome enforces weird security for
+                    // extensions that are implemented as 'content' scripts, and this is the best documented way 
+                    // around it.
+                    var scriptToInject = function (thingSelector) { $(thingSelector).trigger('visit'); };
+                    var actualCode = '(' + scriptToInject + ')(' + JSON.stringify(selector) + ')';
+                    
+                    document.documentElement.setAttribute('onreset', actualCode);
+                    document.documentElement.dispatchEvent(new CustomEvent('reset'));
+                    document.documentElement.removeAttribute('onreset');
+                }
             }
         }
 
