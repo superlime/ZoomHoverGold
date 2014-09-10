@@ -14,6 +14,12 @@ hoverZoomPlugins.push({
             //return srcs.concat(srcs).concat(srcs).concat(srcs);
             return srcs;
         }
+        
+        function htmlDecode(input){
+            var e = document.createElement('div');
+            e.innerHTML = input;
+            return e.textContent;
+        }
 
         function prepareImgLink() {
             var link = $(this), data = link.data(), href = link.attr('href');
@@ -49,13 +55,20 @@ hoverZoomPlugins.push({
                                 } else {
                                     imgur.album.images.forEach(function (img) {
                                         var urls = createUrls(img.image.hash),
-                                            caption = img.image.title;
-                                        if (data.hoverZoomGallerySrc.indexOf(urls) == -1) {
+                                            caption = img.image.title,
+                                            alreadyAdded = false;
+                                        for (var i=0, l=data.hoverZoomGallerySrc.length; i<l; i++) {
+                                            if (data.hoverZoomGallerySrc[i].indexOf(urls[0]) != -1) {
+                                                alreadyAdded = true;
+                                                break;
+                                            }
+                                        }
+                                        if (!alreadyAdded) {
                                             if (caption != '' && img.image.caption != '') {
                                                 caption += ';\n';
                                             }
                                             caption += img.image.caption;
-                                            data.hoverZoomGalleryCaption.push(caption);
+                                            data.hoverZoomGalleryCaption.push(htmlDecode(caption));
                                             data.hoverZoomGallerySrc.push(urls);
                                             data.hoverZoomSrc = undefined;
                                         }
@@ -64,7 +77,7 @@ hoverZoomPlugins.push({
                                 }
                             }).fail(function() {
                                 data.hoverZoomSrc = createUrls(hash);
-                                res.push(link);
+                                link.addClass('hoverZoomLink');
                             });
                             break;
                         } else { // image of an album (hash as anchor)
@@ -79,7 +92,7 @@ hoverZoomPlugins.push({
         }
 
         // Every sites
-        $('a[href*="//imgur.com/"], a[href*="//www.imgur.com/"], a[href*="//i.imgur.com/"]').each(prepareImgLink);
+        $('a[href*="//imgur.com/"], a[href*="//www.imgur.com/"], a[href*="//i.imgur.com/"], a[href*="//m.imgur.com/"]').each(prepareImgLink);
 
         // On imgur.com (galleries, etc)
         if (window.location.host.indexOf('imgur.com') > -1) {

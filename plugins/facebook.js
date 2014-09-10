@@ -6,7 +6,7 @@ hoverZoomPlugins.push({
     name:'Facebook',
     prepareImgLinks:function (callback) {
 
-        $('img[src*="fbcdn"], img[src*="fbexternal"], [style*="fbcdn"], [style*="fbexternal"]').one('mousemove', function () {
+        $('img[src*="fbcdn"], img[src*="fbexternal"], [style*="fbcdn"]:not([data-reactid]), [style*="fbexternal"]').one('mousemove', function () {
             var img = $(this),
                 data = img.data();
             if (data.hoverZoomSrc) {
@@ -52,10 +52,10 @@ hoverZoomPlugins.push({
                 return;
             }
             var key, src = link.attr('ajaxify');
-            if (!options.showHighRes && src.indexOf('&smallsrc=') > -1)
-                key = '&smallsrc=';
+            if (!options.showHighRes && src.indexOf('smallsrc=') > -1)
+                key = 'smallsrc=';
             else
-                key = '&src=';
+                key = 'src=';
             src = src.substr(src.indexOf(key) + key.length);
             src = unescape(src.substr(0, src.indexOf('&')));
             data.hoverZoomSrc = [src];

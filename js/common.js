@@ -1,4 +1,4 @@
-// Copyright (c) 2012 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2014 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 // Load options from local storage
@@ -11,6 +11,8 @@ function loadOptions() {
     options = JSON.parse(localStorage.options);
 
     options.extensionEnabled = options.hasOwnProperty('extensionEnabled') ? options.extensionEnabled : true;
+    options.zoomVideos = options.hasOwnProperty('zoomVideos') ? options.zoomVideos : true;
+    options.muteVideos = options.hasOwnProperty('muteVideos') ? options.muteVideos : true;
     options.pageActionEnabled = options.hasOwnProperty('pageActionEnabled') ? options.pageActionEnabled : true;
     options.showCaptions = options.hasOwnProperty('showCaptions') ? options.showCaptions : true;
     options.showHighRes = options.hasOwnProperty('showHighRes') ? options.showHighRes : false;
@@ -54,14 +56,14 @@ function sendOptions(options) {
         for (var i = 0; i < windows.length; i++) {
             chrome.tabs.getAllInWindow(windows[i].id, function (tabs) {
                 for (var j = 0; j < tabs.length; j++) {
-                    chrome.tabs.sendRequest(tabs[j].id, request);
+                    chrome.tabs.sendMessage(tabs[j].id, request);
                 }
             });
         }
     });
 
     // Send options to other extension pages
-    chrome.extension.sendRequest(request);
+    chrome.runtime.sendMessage(request);
 }
 
 // Return true is the url is part of an excluded site
@@ -124,5 +126,18 @@ function keyCodeToKeyName(keyCode) {
 }
 
 function showUpdateNotification() {
-    webkitNotifications.createHTMLNotification(chrome.extension.getURL('html/update-notif.html')).show();
+    if (chrome.notifications) {
+        var notifId = 'HoverFreeGOLDUpdate',
+            options = {
+                type: 'list',
+                iconUrl: '/images/icon128.png',
+                title: 'Hover Free GOLD! has been updated',
+                message: '',
+                items: [
+                    { title: "WebM, MP4 and Gfycat support", message: ""},
+                    { title: "Mouse wheel album navigation", message: ""}
+                ]
+            };
+        chrome.notifications.create(notifId, options, function(id){});
+    }
 }

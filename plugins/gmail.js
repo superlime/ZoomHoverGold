@@ -1,20 +1,16 @@
-// Copyright (c) 2011 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
 hoverZoomPlugins.push({
     name:'Gmail',
-    version:'0.1',
     prepareImgLinks:function (callback) {
-        var res = [];
-        hoverZoom.urlReplace(res,
-            'img[src*="disp=thd"]',
-            'disp=thd',
-            'disp=inline'
-        );
-        $('img[src*="disp=thd"]').each(function () {
-            $(this).data().hoverZoomCaption = this.alt;
+        $('span[download_url]').each(function () {
+            var url = this.getAttribute('download_url');
+            if (!url || url.substr(0,6) != 'image/') { return; }
+            url = url.substr(url.indexOf(':http') + 1);
+            this.classList.add('hoverZoomLink');
+            $(this).data().hoverZoomSrc = [url];
         });
-        callback($(res));
     }
 });

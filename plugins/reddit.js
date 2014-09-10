@@ -13,5 +13,20 @@ hoverZoomPlugins.push({
             }
             _this.data().hoverZoomCaption = _this.parent().find('a.title').text();
         });
+        
+        $('.link a.thumbnail img').one('mouseover', function() {
+            var link = this.parentNode;
+            if (!link.classList.contains('hoverZoomLink')) {
+              hoverZoom.prepareFromDocument($(link), link.href, function(doc) {
+                  var meta = doc.querySelector('meta[property="og:image"][content]');
+                  if (meta && !link.classList.contains('hoverZoomLink')) {
+                      return meta.content;
+                  } else {
+                      return false;
+                  }
+              });
+            }
+        });
+        
     }
 });

@@ -32,7 +32,7 @@ $(function () {
             }
         }
     });
-    chrome.extension.onRequest.addListener(onRequest);
+    chrome.runtime.onMessage.addListener(onMessage);
 });
 
 function i18n() {
@@ -75,15 +75,15 @@ function saveOptions() {
     sendOptions(options);
 }
 
-function onRequest(request, sender, callback) {
-    switch (request.action) {
+function onMessage(message, sender, callback) {
+    switch (message.action) {
         case 'preloadAvailable':
             aPreload.css('display', 'inline');
             break;
         case 'preloadProgress':
-            prgPreloading.attr('value', request.value).attr('max', request.max);
-            lblPreloading.css('display', request.value < request.max ? 'inline' : 'none');
-            if (request.value < request.max) {
+            prgPreloading.attr('value', message.value).attr('max', message.max);
+            lblPreloading.css('display', message.value < message.max ? 'inline' : 'none');
+            if (message.value < message.max) {
                 aPreload.css('display', 'none');
             }
             break;

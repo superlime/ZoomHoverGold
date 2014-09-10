@@ -22,9 +22,9 @@ hoverZoomPlugins.push({
             /\/(\d|default)\.jpg/,
             '/0.jpg'
         );
-        $('img[data-thumb*="ytimg.com/vi/"]').each(function () {
-            var _this = $(this);
-            _this.data().hoverZoomSrc = [_this.attr('data-thumb').replace(/\/(\d|default)\.jpg/, '/0.jpg')];
+        $('a img[data-thumb*="ytimg.com/vi/"]').each(function () {
+            var _this = $(parentNodeName(this, 'a'));
+            _this.data().hoverZoomSrc = [this.getAttribute('data-thumb').replace(/\/(\d|default)\.jpg/, '/0.jpg')];
             res.push(_this);
         });
         callback($(res));

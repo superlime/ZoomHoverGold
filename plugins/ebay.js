@@ -84,7 +84,7 @@ hoverZoomPlugins.push({
             //console.log('requestUrl: ' + requestUrl);
 
             // Ajax calls are made through the background page (not possible from a content script)
-            chrome.extension.sendRequest({action:'ajaxGet', url:requestUrl}, function (data) {
+            chrome.runtime.sendMessage({action:'ajaxGet', url:requestUrl}, function (data) {
                 //console.log(data);
                 var getMultipleItemsResponse = JSON.parse(data);
                 if (getMultipleItemsResponse.Errors)

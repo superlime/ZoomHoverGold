@@ -1,6 +1,6 @@
 ﻿{
     "name":"Hover Free GOLD!",
-    "version":"1.0.0",
+    "version":"1.0.1",
     "description":"__MSG_extDescription__",
     "manifest_version":2,
     "icons":{
@@ -22,15 +22,22 @@
     },
     "permissions":[
         "tabs",
-        "history",
-        "notifications",
         "webRequest",
         "webRequestBlocking",
         "*://*/*"
+        ,"cookies",
+        "history",
+        "notifications",
+        "webNavigation", 
+        "unlimitedStorage"
     ],
     "content_security_policy":"script-src 'self' https://apis.google.com; object-src 'self'",
     "web_accessible_resources":[
-        "images/loading.gif"
+        "images/loading.gif",
+		"js/jquery.min.js",
+        "js/jquery-ui.min.js",
+        "js/common.js",
+        "js/options.js"
     ],
     "content_scripts":[
         {
@@ -823,7 +830,9 @@
                 "plugins/livememe.js",
                 "plugins/memegenerator.js",
                 "plugins/slutcapades.js",
-                "plugins/memefive.js"]
+                "plugins/memefive.js",
+                "plugins/gfycat.js",
+                "plugins/memedad.js"]
         },
         {
             "js":["plugins/quickmeme.js"],
@@ -1110,6 +1119,27 @@
         {
             "js": [ "plugins/animepaper.js" ],
             "matches": [ "*://*.animepaper.net/*" ]
+        },
+        {
+            "js": [ "plugins/choualbox.js" ],
+            "matches": [ "*://*.choualbox.com/*" ]
+        },
+        {
+            "js": [ "plugins/yandex.js" ],
+            "matches": [ "*://*.yandex.com/*",
+                          "*://*.yandex.ru/*" ]
+        },
+        {
+            "js": [ "plugins/kununu.js" ],
+            "matches": [ "*://*.kununu.com/*" ]
+        },
+        {
+            "js": [ "plugins/miiverse.js" ],
+            "matches": [ "*://miiverse.nintendo.net/*" ]
+        },
+        {
+            "js": [ "plugins/mercadolibre_com_ar.js" ],
+            "matches": [ "*://*.mercadolibre.com.ar/*" ]
         },
         {
             "js":["js/hoverzoom.js"],

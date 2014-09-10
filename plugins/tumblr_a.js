@@ -6,7 +6,7 @@ hoverZoomPlugins.push({
     name:'Tumblr',
     prepareImgLinks:function (callback) {
         var res = [];
-        $('img[src*="media.tumblr.com/"]').each(function () {
+        $('img[src*="media.tumblr.com/"]').one('mouseenter', function () {
             var img = $(this), link = img.parents('a:eq(0)'),
                 link = link.length ? link : img,
                 data = link.data();
@@ -15,30 +15,25 @@ hoverZoomPlugins.push({
             }
 
             var url = img.attr('src'),
-                width = img.width(),
-                url = url.replace(/_[0-9a-z]*\.(.*)$/, '_maxwidth.$1'),
                 urls = [];
 
-            //if (width < 1280) { urls.push(url.replace('maxwidth', '1280')); }
-            if (width < 500) {
-                urls.push(url.replace('maxwidth', '500'));
+            if (url.indexOf('_1280.') > -1) {
+                return;
             }
-            if (width < 400) {
-                urls.push(url.replace('maxwidth', '400'));
-            }
-            if (width < 250) {
-                urls.push(url.replace('maxwidth', '250'));
-            }
-            if (width < 128) {
-                urls.push(url.replace('maxwidth', '128'));
-            }
-            if (width < 100) {
-                urls.push(url.replace('maxwidth', '100'));
-            }
-            if (urls.length) {
-                link.data().hoverZoomSrc = urls;
-                res.push(link);
-            }
+            
+            url = url.replace(/_[0-9a-z]*\.(.*)$/, '_maxwidth.$1');
+                
+            var url1280 = url.replace('maxwidth', '1280');
+            $.get(url1280)
+                .done(function() { urls.push(url1280); })
+                .always(function() {
+                    if (width < 500) {
+                        urls.push(url.replace('maxwidth', '500'));
+                        link.data().hoverZoomSrc = urls;
+                        link.addClass('hoverZoomLink');
+                        hoverZoom.displayPicFromElement(link);
+                    }            
+                });
         });
         hoverZoom.urlReplace(res,
             'a[href*="tumblr.com/photo/"]',
@@ -46,7 +41,7 @@ hoverZoomPlugins.push({
             ''
         );
         callback($(res));
-        $('a[href*="tumblr.com/post/"]').one('mouseenter', function () {
+        $('a[href*="tumblr.com/post/"], a[href*="tumblr.com/image/"]').one('mouseenter', function () {
             var link = $(this), lData = link.data(), aHref = this.href.split('/');
             if (lData.hoverZoomSrc) {
                 return;

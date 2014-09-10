@@ -15,32 +15,26 @@ hoverZoomPlugins.push({
         hoverZoom.urlReplace(res,
             'img[src*=":thumb"]',
             ':thumb',
-            ''
+            ':large'
         );
-        $('a[data-expanded-url], a[data-full-url], a[data-url]').each(function () {
+        $('[data-expanded-url], [data-full-url], [data-url]').each(function () {
             var link = $(this),
                 url = this.getAttribute('data-expanded-url') || this.getAttribute('data-full-url') || this.getAttribute('data-url');
-            if (url.match(/\/[^:]+\.(?:jpe?g|gif|png|svg|webp|bmp|ico|xbm)(?:[\?#].*)?$/i)) {
-                link.data().hoverZoomSrc = [url];
+            if (url.match(/\/[^:]+\.(?:jpe?g|gif|png|svg|webp|bmp|ico|xbm)(?:[\?#:].*)?$/i) || url.match(/twimg\.com/)) {
+                link.data().hoverZoomSrc = [url.replace(':thumb', ':large')];
                 res.push(link);
+                link.addClass('hoverZoomLink');
             }
         });
 
-        $('a:contains("pic.twitter.com/")').each(function () {
-            var link = $(this);
-            var url = $(link.parent().parent().parent().data('expandedFooter')).find("a.media-thumbnail").data('url');
-            link.data().hoverZoomSrc = [url];
-            link.addClass('hoverZoomLink');
+        $('a:contains("pic.twitter.com/")').one('mouseover', function() {
+            hoverZoom.prepareFromDocument($(this), this.href, function(doc) {
+                var img = doc.querySelector('img[src*="twimg.com/media/"]');
+                return img ? img.src + ':large' : false;
+            });
         });
+        
 
-/*        $('a[data-expanded-url*="/photo/"], a[data-full-url*="/photo/"]').each(function () {
-            var link = $(this),
-                expandedUrl = link.attr('data-expanded-url') || link.attr('data-full-url'),
-                photoId = expandedUrl.replace(/.*status\/(\d+).*$/, '$1');
-            //getFromAPI(link, photoId);
-            link.addClass('hoverZoomLink');
-        });
-*/
         callback($(res));
     }
 });

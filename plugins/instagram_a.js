@@ -6,13 +6,14 @@ hoverZoomPlugins.push({
     name:'Instagram',
     prepareImgLinks:function (callback) {
         var res = [],
-            search = /.*(?:instagr\.am|instagram\.com)\/p\/([^\/]+).*/,
+            search = /.*(?:instagr\.am|instagram\.com)\/p\/([^\/]+).*/i,
             replace = 'http://instagr.am/p/$1/media/?size=l';
-        hoverZoom.urlReplace(res, 'a[href*="instagr.am/p/"], a[href*="instagram.com/p/"]', search, replace);
-        $('a[data-expanded-url*="instagr.am/p/"], a[data-expanded-url*="instagram.com/p/"]').each(function () {
-            var link = $(this);
-            link.data().hoverZoomSrc = [this.dataset['expandedUrl'].replace(search, replace)];
-            res.push(link);
+        $('a[href*="instagr.am/p/"], a[href*="instagram.com/p/"], a[data-expanded-url*="nstagr.am/p/"], a[data-expanded-url*="nstagram.com/p/"]').each(function () {
+            var link = $(this), data = link.data(), url = this.dataset['expandedUrl'] || this.href;
+            if (!data.hoverZoomSrc && !link.hasClass('compFrontside') && !link.hasClass('compFlipside')) {
+                data.hoverZoomSrc = [url.replace(search, replace)];
+                res.push(link);
+            }
         });
         if (res.length) {
             callback($(res));
