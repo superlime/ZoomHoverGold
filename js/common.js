@@ -127,11 +127,11 @@ function keyCodeToKeyName(keyCode) {
 
 function showUpdateNotification() {
     if (chrome.notifications) {
-        var notifId = 'HoverFreeGOLDUpdate',
+        var notifId = 'ZoomHoverGOLDUpdate',
             options = {
                 type: 'list',
                 iconUrl: '/images/icon128.png',
-                title: 'Hover Free GOLD! has been updated',
+                title: 'ZoomHover GOLD! has been updated',
                 message: '',
                 items: [
                     { title: "WebM, MP4 and Gfycat support", message: ""},

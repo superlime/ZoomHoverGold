@@ -1,4 +1,4 @@
-hoverfree 
+ZoomHover GOLD! 
 =========
 
 Fork of Hover Free, which was a fork of hoverzoom.net -- this Chrome extension will show an image if you hover its thumbnail or a link.
@@ -10,10 +10,10 @@ Unfortunately, Ralph Tice decided to stop further development of Hover Free.  I 
 Philosophy:
 ===========
 
-HoverFree GOLD! will be free to use and help people preview a linked image.
+ZoomHover GOLD! will be free to use and help people preview a linked image.
 
-HoverFree GOLD! will never inject advertising, referral links, adware, spyware, etc.
+ZoomHover GOLD! will never inject advertising, referral links, adware, spyware, etc.
 
-HoverFree GOLD! will never track or record browsing activity without you specifically telling it to (i.e. Reddit Gold visited links work by submitting a POST request to the Reddit API, telling it you visited a link.  To get this functionality, you have to explicitly enable it in the options.  Default setting is off.)
+ZoomHover GOLD! will never track or record browsing activity without you specifically telling it to (i.e. Reddit Gold visited links work by submitting a POST request to the Reddit API, telling it you visited a link.  To get this functionality, you have to explicitly enable it in the options.  Default setting is off.)
 
-HoverFree GOLD! source and change history will always be visible on github, for maximum transparency into any updates or modifications.
+ZoomHover GOLD! source and change history will always be visible on github, for maximum transparency into any updates or modifications.

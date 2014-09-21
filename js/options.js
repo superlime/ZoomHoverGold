@@ -4,12 +4,12 @@
     actionKeys = [
         {
             id:'actionKey',
-            title:'Activate Hover Free GOLD!',
-            description:'If a key is set, Hover Free GOLD! will be active only when this key is held down.'
+            title:'Activate ZoomHover GOLD!',
+            description:'If a key is set, ZoomHover GOLD! will be active only when this key is held down.'
         },
         {
             id:'hideKey',
-            title:'Disable Hover Free GOLD!',
+            title:'Disable ZoomHover GOLD!',
             description:'Holding this key down hides the zoomed picture. Use it when the picture hides elements that are also displayed on mouseover.'
         },
         {
