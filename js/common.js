@@ -24,6 +24,8 @@ function loadOptions() {
     options.excludedSites = options.hasOwnProperty('excludedSites') ? options.excludedSites : [];
     options.whiteListMode = options.hasOwnProperty('whiteListMode') ? options.whiteListMode : false;
     options.picturesOpacity = options.hasOwnProperty('picturesOpacity') ? options.picturesOpacity : 1;
+    options.numberOfCaptionLines = options.hasOwnProperty('numberOfCaptionLines') ? options.numberOfCaptionLines : 3;
+    options.maxCaptionHeight = options.hasOwnProperty('maxCaptionHeight') ? options.maxCaptionHeight : 27;
     options.showWhileLoading = options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : true;
     //options.expAlwaysFullZoom = options.hasOwnProperty('expAlwaysFullZoom') ? options.expAlwaysFullZoom : false;
     options.mouseUnderlap = options.hasOwnProperty('mouseUnderlap') ? options.mouseUnderlap : true;
@@ -134,8 +136,7 @@ function showUpdateNotification() {
                 title: 'ZoomHover GOLD! has been updated',
                 message: '',
                 items: [
-                    { title: "WebM, MP4 and Gfycat support", message: ""},
-                    { title: "Mouse wheel album navigation", message: ""}
+                    { title: "Support for setting maximum number of lines in the caption", message: ""},
                 ]
             };
         chrome.notifications.create(notifId, options, function(id){});

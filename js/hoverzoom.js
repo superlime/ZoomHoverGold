@@ -1,11 +1,18 @@
 ﻿// Copyright (c) 2014 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
-var hoverZoomPlugins = hoverZoomPlugins || [],
-    debug = false;
+var hoverZoomPlugins = hoverZoomPlugins || [];
+var debug = false;
+var verboseDebug = false;
 
 function cLog(msg) {
     if (debug) {
+        console.log(msg);
+    }
+}
+
+function cvLog(msg) {
+    if (verboseDebug) {
         console.log(msg);
     }
 }
@@ -31,6 +38,7 @@ var hoverZoom = {
     pageGenerator:'',
 
     loadHoverZoom:function () {
+        cvLog("loadHoverZoom");
         var hz = hoverZoom,
             wnd = $(window),
             body = $(document.body),
@@ -99,7 +107,7 @@ var hoverZoom = {
                 'font-weight':'bold',
                 'color':'#333',
                 'text-align':'center',
-                'max-height':'27px',
+                'max-height': '27px',
                 'overflow':'hidden',
                 'vertical-align':'top'
             },
@@ -129,6 +137,7 @@ var hoverZoom = {
 
         // Calculate optimal image position and size
         function posImg(position) {
+            cvLog("posImg(position = " + position + ")");
             if (!imgFullSize) {
                 return;
             }
@@ -149,16 +158,19 @@ var hoverZoom = {
                 
             function posCaption() {
                 if (hzCaption) {
+                    cLog('[' + (hz.hzImg.height() + hzCaption.height() > wndHeight - statusBarHeight) + '] hzImg( ' + hz.hzImg.height() + ') + hzCaption(' + hzCaption.height() + ' > wnd(' + wndHeight + ' - statusBar(' + statusBarHeight + ')');                
                     hzCaption.css('max-width', imgFullSize.width());
                     if (hzCaption.height() > 20) {
                         hzCaption.css('font-weight', 'normal');
                     }
                     // This is looped 10x max just in case something
                     // goes wrong, to avoid freezing the process.
-                    var i = 0;
-                    while (hz.hzImg.height() > wndHeight - statusBarHeight && i++ < 10) {
+                    var i = 0;                    
+                    
+                    while (hz.hzImg.height() + hzCaption.height() > wndHeight - statusBarHeight && i++ < 10) {
                         imgFullSize.height(wndHeight - padding - statusBarHeight - hzCaption.height()).width('auto');
                         hzCaption.css('max-width', imgFullSize.width());
+                        cLog('reheight[' + (hz.hzImg.height() + hzCaption.height() > wndHeight - statusBarHeight) + '] hzImg( ' + hz.hzImg.height() + ') + hzCaption(' + hzCaption.height() + ' > wnd(' + wndHeight + ' - statusBar(' + statusBarHeight + ')');
                     }
                 }
             }
@@ -205,6 +217,7 @@ var hoverZoom = {
 
                 // Height adjustment
                 if (hz.hzImg.height() > wndHeight - padding - statusBarHeight) {
+                    cvLog("Height Adjustment");
                     imgFullSize.height(wndHeight - padding - statusBarHeight).width('auto');
                 }
 
@@ -335,7 +348,7 @@ var hoverZoom = {
                 cLog('Over image. mousePos:');
                 cLog(mousePos);*/
                 if (mousePos.top > linkRect.top && mousePos.top < linkRect.bottom && mousePos.left > linkRect.left && mousePos.left < linkRect.right) {
-                    //cLog('Mouse over link');
+                    cvLog('Mouse over link');
                     return;
                 }
             }
@@ -492,12 +505,16 @@ var hoverZoom = {
                 hz.hzImg.css('cursor', 'pointer');
 
                 initLinkRect(imgThumb || hz.currentLink);
-
             }
 
             if (hz.currentLink) {
                 var linkData = hz.currentLink.data();
                 if (options.showCaptions && linkData.hoverZoomCaption) {
+					if (!isNaN(options.maxCaptionHeight))
+					{
+						hzCaptionCss['max-height'] = options.maxCaptionHeight + 'px';
+					}
+                
                     hzCaption = $('<div/>', {id:'hzCaption', text:linkData.hoverZoomCaption}).css(hzCaptionCss).appendTo(hz.hzImg);
                 }
                 if (linkData.hoverZoomGallerySrc) {
@@ -1166,6 +1183,8 @@ var hoverZoom = {
                 if (options.showCaptions) {
                     $(hzCaption).text(data.hoverZoomCaption);
                 }
+                
+                posImg();
             }
         }
 
@@ -1279,8 +1298,8 @@ var hoverZoom = {
                     hoverZoom.currentLink[0].dispatchEvent(simEvent);
                 }
             });
-
         }
+        
         hoverZoom.hzImg.css(hoverZoom.hzImgCss);
         hoverZoom.hzImg.empty();
         if (displayNow) {

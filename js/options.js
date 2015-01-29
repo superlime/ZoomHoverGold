@@ -129,6 +129,8 @@ function saveOptions() {
     options.updateNotifications = $('#chkUpdateNotifications')[0].checked;
     options.filterNSFW = $('#chkFilterNSFW')[0].checked;
     options.enableGalleries = $('#chkEnableGalleries')[0].checked;
+    options.numberOfCaptionLines = $('#sliderMaxCaptionLines').slider('value');
+    options.maxCaptionHeight = (options.numberOfCaptionLines * 11) + 5;
 
     for (var i = 0; i < actionKeys.length; i++) {
         options[actionKeys[i].id] = parseInt($('#sel' + actionKeys[i].id).val());
@@ -184,6 +186,9 @@ function restoreOptions() {
     }
     $('#chkWhiteListMode')[0].checked = options.whiteListMode;
     
+    $('#txtMaxCaptionLines').val(options.numberOfCaptionLines);
+    $('#sliderMaxCaptionLines').slider('value', options.numberOfCaptionLines);
+    
     chkZoomVideosOnChange();
     
     enableControls(false);
@@ -236,6 +241,15 @@ function txtPicturesOpacityOnChange() {
     $('#sliderPicturesOpacity').slider('value', value);
 }
 
+function txtMaxCaptionLinesOnChange() {
+    var value = parseInt(this.value);
+    if (isNaN(value)) {
+        value = 3;
+    }
+    this.value = value;
+    $('#sliderMaxCaptionLines').slider('value', value);
+}
+
 function enableControls(enabled) {
     enabled = enabled || false;
     $('#buttons').find('button').attr('disabled', !enabled);
@@ -274,7 +288,17 @@ $(function () {
             enableControls(true);
         }
     });
+    $('#sliderMaxCaptionLines').slider({
+        range:'min',
+        min:2,
+        max:10,
+        slide:function (event, ui) {
+            $("#txtMaxCaptionLines").val(ui.value);
+            enableControls(true);
+        }
+    });
     $('#txtPicturesOpacity').change(txtPicturesOpacityOnChange);
+    $('#txtMaxCaptionLines').change(txtMaxCaptionLinesOnChange);
     $('.actionKey').change(selKeyOnChange);
     $('#btnAddExcludedSite').click(btnAddExcludedSiteOnClick);
     $('#btnRemoveExcludedSite').click(btnRemoveExcludedSiteOnClick);
