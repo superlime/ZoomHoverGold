@@ -26,6 +26,7 @@ hoverZoomPlugins.push({
             if (href.indexOf('gallery') == -1 && data.hoverZoomSrc) {
                 return;
             }
+            href = href.replace(/\?.*/, '');
             
             if (options.zoomVideos && (href.substr(-3) == 'gif' || href.substr(-4) == 'gifv')) {
                 data.hoverZoomSrc = [href.replace(/\.gif.?/, '.mp4'), href];

@@ -166,7 +166,6 @@ function restoreOptions() {
     $('#txtDisplayDelay').val((options.displayDelay || 0) / 1000);
     $('#txtFadeDuration').val((options.fadeDuration || 0) / 1000);
     $('#chkShowWhileLoading')[0].checked = options.showWhileLoading;
-    //$('#chkAlwaysFullZoom')[0].checked = options.expAlwaysFullZoom;
     $('#chkMouseUnderlap')[0].checked = options.mouseUnderlap;
     $('#chkUpdateNotifications')[0].checked = options.updateNotifications;
     $('#chkFilterNSFW')[0].checked = options.filterNSFW;
@@ -191,7 +190,7 @@ function restoreOptions() {
     $('#sliderMaxCaptionLines').slider('value', options.numberOfCaptionLines);
     
     chkZoomVideosOnChange();
-    chkGalleriesMouseWheelOnChange();
+    chkEnableGalleriesOnChange();
     
     enableControls(false);
 }

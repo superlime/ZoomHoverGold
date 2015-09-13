@@ -136,8 +136,7 @@ function showUpdateNotification() {
                 title: 'ZoomHover GOLD! has been updated',
                 message: '',
                 items: [
-					{ title: "Fix for Reddit GOLD! detection, many minor fixes/updates", message: ""},
-                    { title: "Support for setting maximum number of lines in the caption", message: ""},
+					{ title: "Fix for Reddit GOLD! integration, many minor fixes", message: ""},
                 ]
             };
         chrome.notifications.create(notifId, options, function(id){});

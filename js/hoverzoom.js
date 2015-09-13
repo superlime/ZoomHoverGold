@@ -107,7 +107,7 @@ var hoverZoom = {
                 'font-weight':'bold',
                 'color':'#333',
                 'text-align':'center',
-                'max-height': '27px',
+                'max-height':'27px',
                 'overflow':'hidden',
                 'vertical-align':'top'
             },
@@ -511,6 +511,7 @@ var hoverZoom = {
                 hz.hzImg.css('cursor', 'pointer');
 
                 initLinkRect(imgThumb || hz.currentLink);
+
             }
 
             if (hz.currentLink) {
@@ -545,11 +546,9 @@ var hoverZoom = {
                 var url = hz.currentLink.context.href || imgDetails.url;
                 chrome.runtime.sendMessage({action:'addUrlToHistory', url:url});
             }
-
             chrome.runtime.sendMessage({action:'trackEvent', event:{category:'Actions', action:'ImageDisplayedOnSite', label:document.location.host}});
             chrome.runtime.sendMessage({action:'trackEvent', event:{category:'Actions', action:'ImageDisplayedFromSite', label:imgDetails.host}});
 
-            
             // Skip reddit link logging if not on reddit, or if user didn't enable "add to gold history", or if in
             // chrome incognito mode.
             if (options.addToRedditGoldHistory && !chrome.extension.inIncognitoContext && isThisReddit())
@@ -1276,7 +1275,7 @@ var hoverZoom = {
     // Extract a thumbnail url from an element, whether it be a link,
     // an image or a element with a background image.
     getThumbUrl:function (el) {
-        var compStyle = getComputedStyle(el),
+        var compStyle = (el && el.nodeType == 1) ? getComputedStyle(el) : false,
             backgroundImage = compStyle ? compStyle.backgroundImage : 'none';
         if (backgroundImage != 'none') {
             return backgroundImage.replace(/.*url\s*\(\s*(.*)\s*\).*/i, '$1');
@@ -1306,8 +1305,8 @@ var hoverZoom = {
                     hoverZoom.currentLink[0].dispatchEvent(simEvent);
                 }
             });
+
         }
-        
         hoverZoom.hzImg.css(hoverZoom.hzImgCss);
         hoverZoom.hzImg.empty();
         if (displayNow) {

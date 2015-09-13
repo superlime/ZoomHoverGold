@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Romain Vallet <romain.vallet@gmail.com>
+// Copyright (c) 2015 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 var hoverZoomPlugins = hoverZoomPlugins || [];
@@ -7,17 +7,16 @@ hoverZoomPlugins.push({
     prepareImgLinks:function (callback) {
 
         // Profile pictures
-        $('a img[src*="fbcdn-profile"]').each(function() {
+        $('a[data-hovercard] img[src*="profile"]').each(function() {
             var img = $(this),
                 link = img.parents('a'),
                 data = link.data();
             if (data.hoverZoomSrc) {
                 return;
             }
-            var url = link.attr('href');
-            url = url.replace(/.*\?u=([^&]*)&.*/, '$1').replace('%2F', '/').replace(/.*facebook\.com\//, '').replace(/.*messages\//, '').replace(/profile\.php\?id=(\d+).*/, '$1').replace(/\?.*/, '');
-            url = 'https://graph.facebook.com/' + url + '/picture';
-            if (url != 'photo.php') {
+            var url = link.attr('data-hovercard').match(/id=(\d+)/);
+            if (url && url.length > 1) {
+              url = 'https://graph.facebook.com/' + url[1] + '/picture';
               if (options.showHighRes) {
                   url += '?width=10000';
               } else {
