@@ -1,4 +1,4 @@
-﻿// Copyright (c) 2013 Romain Vallet <romain.vallet@gmail.com>
+﻿// Copyright (c) 2014 Romain Vallet <romain.vallet@gmail.com>
 // Licensed under the MIT license, read license.txt
 
 // True if the current version of the extension has something to show in an update notification

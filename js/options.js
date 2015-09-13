@@ -124,11 +124,11 @@ function saveOptions() {
     options.fadeDuration = getMilliseconds($('#txtFadeDuration'));
     options.picturesOpacity = $('#sliderPicturesOpacity').slider('value') / 100;
     options.showWhileLoading = $('#chkShowWhileLoading')[0].checked;
-    //options.expAlwaysFullZoom = $('#chkAlwaysFullZoom')[0].checked;
     options.mouseUnderlap = $('#chkMouseUnderlap')[0].checked;
     options.updateNotifications = $('#chkUpdateNotifications')[0].checked;
     options.filterNSFW = $('#chkFilterNSFW')[0].checked;
     options.enableGalleries = $('#chkEnableGalleries')[0].checked;
+    options.galleriesMouseWheel = $('#chkGalleriesMouseWheel')[0].checked;
     options.numberOfCaptionLines = $('#sliderMaxCaptionLines').slider('value');
     options.maxCaptionHeight = (options.numberOfCaptionLines * 11) + 5;
 
@@ -171,6 +171,7 @@ function restoreOptions() {
     $('#chkUpdateNotifications')[0].checked = options.updateNotifications;
     $('#chkFilterNSFW')[0].checked = options.filterNSFW;
     $('#chkEnableGalleries')[0].checked = options.enableGalleries;
+    $('#chkGalleriesMouseWheel')[0].checked = options.galleriesMouseWheel;
 
     for (var i = 0; i < actionKeys.length; i++) {
         $('#sel' + actionKeys[i].id).val(options[actionKeys[i].id]);
@@ -190,6 +191,7 @@ function restoreOptions() {
     $('#sliderMaxCaptionLines').slider('value', options.numberOfCaptionLines);
     
     chkZoomVideosOnChange();
+    chkGalleriesMouseWheelOnChange();
     
     enableControls(false);
 }
@@ -271,6 +273,14 @@ function chkZoomVideosOnChange() {
     }
 }
 
+function chkEnableGalleriesOnChange() {
+    if (ge('chkEnableGalleries').checked) {
+      $('#pGalleriesMouseWheel').show();
+    } else {
+      $('#pGalleriesMouseWheel').hide();
+    }
+}
+
 $(function () {
     initActionKeys();
     $('input, select, textarea').change(enableControls).keydown(enableControls);
@@ -278,6 +288,7 @@ $(function () {
     $('#btnReset').click(restoreOptions);
     $('#chkZoomVideos').change(chkZoomVideosOnChange);
     $('#chkWhiteListMode').change(chkWhiteListModeOnChange);
+    $('#chkEnableGalleries').change(chkEnableGalleriesOnChange);
     $('#tabs').tabs({ selected:(location.hash != '') ? parseInt(location.hash.substr(1)) : 0 });
     $('#sliderPicturesOpacity').slider({
         range:'min',

@@ -166,7 +166,6 @@ var hoverZoom = {
                     // This is looped 10x max just in case something
                     // goes wrong, to avoid freezing the process.
                     var i = 0;                    
-                    
                     while (hz.hzImg.height() + hzCaption.height() > wndHeight - statusBarHeight && i++ < 10) {
                         imgFullSize.height(wndHeight - padding - statusBarHeight - hzCaption.height()).width('auto');
                         hzCaption.css('max-width', imgFullSize.width());
@@ -355,9 +354,9 @@ var hoverZoom = {
 
             if (links && links.length > 0) {
                 var hoverZoomSrcIndex = links.data().hoverZoomSrcIndex || 0;
-                if (links.data().hoverZoomSrc && links.data().hoverZoomSrc != 'undefined' &&
+                if (links.data().hoverZoomSrc && typeof(links.data().hoverZoomSrc) != 'undefined' &&
                     links.data().hoverZoomSrc[hoverZoomSrcIndex] &&
-                    links.data().hoverZoomSrc[hoverZoomSrcIndex] != 'undefined') {
+                    typeof(links.data().hoverZoomSrc[hoverZoomSrcIndex]) != 'undefined') {
                     // Happens when the mouse goes from an image to another without hovering the page background
                     if (links.data().hoverZoomSrc[hoverZoomSrcIndex] != imgDetails.url) {
                         hideHoverZoomImg();
@@ -482,7 +481,14 @@ var hoverZoom = {
                 }
                 if (!lowResSrc) {
                     imgThumb = hz.currentLink.find('[style]').first();
-                    lowResSrc = hz.getThumbUrl(imgThumb);
+                    if (imgThumb.length > 0)
+                    {
+                        lowResSrc = hz.getThumbUrl(imgThumb);
+                    }
+                    else
+                    {
+                        cLog('Bad link?');
+                    }
                 }
                 lowResSrc = lowResSrc || 'noimage';
                 if (loading && lowResSrc.indexOf('noimage') == -1) {
@@ -920,7 +926,9 @@ var hoverZoom = {
         function bindEvents() {
             wnd.bind('DOMNodeInserted', windowOnDOMNodeInserted).load(windowOnLoad).scroll(cancelImageLoading);
             $(document).mousemove(documentMouseMove).mouseleave(cancelImageLoading).mousedown(documentMouseDown).keydown(documentOnKeyDown).keyup(documentOnKeyUp);
-            $(document).on('mousewheel', documentOnMouseWheel);
+            if (options.galleriesMouseWheel) {
+                $(document).on('mousewheel', documentOnMouseWheel);
+            }
         }
         
         function documentOnMouseWheel(event) {
@@ -1376,7 +1384,14 @@ var hoverZoom = {
             }
             var src = getSrc(doc);
             if (src) {
-                link.data().hoverZoomSrc = [src];
+                if (Array.isArray(src)) {
+                    console.log(src);
+                    link.data().hoverZoomGallerySrc = src;
+                    link.data().hoverZoomGalleryIndex = 0;
+                    link.data().hoverZoomSrc = src[0];
+                } else {
+                    link.data().hoverZoomSrc = [src];
+                }
                 link.addClass('hoverZoomLink');
                 hoverZoom.displayPicFromElement(link);
             }

@@ -27,12 +27,12 @@ function loadOptions() {
     options.numberOfCaptionLines = options.hasOwnProperty('numberOfCaptionLines') ? options.numberOfCaptionLines : 3;
     options.maxCaptionHeight = options.hasOwnProperty('maxCaptionHeight') ? options.maxCaptionHeight : 27;
     options.showWhileLoading = options.hasOwnProperty('showWhileLoading') ? options.showWhileLoading : true;
-    //options.expAlwaysFullZoom = options.hasOwnProperty('expAlwaysFullZoom') ? options.expAlwaysFullZoom : false;
     options.mouseUnderlap = options.hasOwnProperty('mouseUnderlap') ? options.mouseUnderlap : true;
     options.updateNotifications = options.hasOwnProperty('updateNotifications') ? options.updateNotifications : true;
     options.enableAds = options.hasOwnProperty('enableAds') ? options.enableAds : 0;
     options.filterNSFW = options.hasOwnProperty('filterNSFW') ? options.filterNSFW : false;
     options.enableGalleries = options.hasOwnProperty('enableGalleries') ? options.enableGalleries : true;
+    options.galleriesMouseWheel = options.hasOwnProperty('galleriesMouseWheel') ? options.galleriesMouseWheel : true;
 
     // Action keys
     options.actionKey = options.hasOwnProperty('actionKey') ? options.actionKey : 0;
@@ -136,6 +136,7 @@ function showUpdateNotification() {
                 title: 'ZoomHover GOLD! has been updated',
                 message: '',
                 items: [
+					{ title: "Fix for Reddit GOLD! detection, many minor fixes/updates", message: ""},
                     { title: "Support for setting maximum number of lines in the caption", message: ""},
                 ]
             };
